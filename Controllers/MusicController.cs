@@ -26,7 +26,7 @@ namespace MusicLibraryWebAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetMusicById(int id) 
         {
-            var musicById = _context; //.ModelName
+            var musicById = _context; //.ModelNameWhere(x => x.Id == Id).SingleOrDefault();
             return Ok(musicById);
         }
 
