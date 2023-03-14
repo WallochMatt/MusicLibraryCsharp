@@ -19,14 +19,14 @@ namespace MusicLibraryWebAPI.Controllers
         [HttpGet]
         public IActionResult GetAllMusic() 
         {
-            var music = _context; //.ModelName
+            var music = _context.Songs;
             return Ok(music);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetMusicById(int id) 
         {
-            var musicById = _context; //.ModelNameWhere(x => x.Id == Id).SingleOrDefault();
+            var musicById = _context.Songs.Where(x => x.Id == id).SingleOrDefault();
             return Ok(musicById);
         }
 
