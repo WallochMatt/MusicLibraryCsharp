@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using MusicLibraryWebAPI.Data;
+using MusicLibraryWebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,8 +31,15 @@ namespace MusicLibraryWebAPI.Controllers
             return Ok(musicById);
         }
 
-
-
+        [HttpPost]
+        public async Task<ActionResult<Song>> PostSong(Song song)
+        {
+            _context.Songs.Add(song);
+            await _context.SaveChangesAsync();
+            
+            return CreatedAtAction(nameof(PostSong), new { id = song.Id, title = song.Title, artist = song.Artist, album = song.Album,
+                releaseDate = song.ReleaseDate, genre = song.Genre} , song);
+        }
 
 
     }
