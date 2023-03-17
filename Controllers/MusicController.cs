@@ -70,11 +70,21 @@ namespace MusicLibraryWebAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSong(int id) 
+        {
+            var song = await _context.Songs.FindAsync(id);
+            if (song == null)
+            {
+                return NotFound();
+            }
 
+            _context.Songs.Remove(song);   
+            await _context.SaveChangesAsync();
 
+            return NoContent();
+        }
 
-
-        //Del
 
         private bool SongExists(long id)
         {
