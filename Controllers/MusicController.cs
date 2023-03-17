@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using MusicLibraryWebAPI.Data;
 using MusicLibraryWebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -41,6 +42,43 @@ namespace MusicLibraryWebAPI.Controllers
                 releaseDate = song.ReleaseDate, genre = song.Genre} , song);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Song>> PutSong(long id, Song song)
+        {
+            if (id != song.Id)
+            {
+                return BadRequest();
+            }
 
+            _context.Entry(song).State = EntityState.Modified; ;
+            
+            try
+            {
+                await _context.SaveChangesAsync();  
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SongExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
+        }
+
+
+
+
+
+        //Del
+
+        private bool SongExists(long id)
+        {
+            return _context.Songs.Any(x => x.Id == id);
+        }
     }
 }
